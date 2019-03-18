@@ -16,3 +16,7 @@ exports.generateResponse = function(statusCode = 200, body = {}) {
     body: JSON.stringify(msg)
   };
 };
+
+exports.getBody = function(event) {
+  return JSON.parse(event.body);
+};
