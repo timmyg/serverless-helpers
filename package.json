@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/timmyg/serverless-helpers/issues"
   },
-  "homepage": "https://github.com/timmyg/serverless-helpers#readme"
+  "homepage": "https://github.com/timmyg/serverless-helpers#readme",
+  "dependencies": {
+    "aws-sdk": "^2.425.0"
+  }
 }

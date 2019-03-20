@@ -1,3 +1,5 @@
+const aws = require("aws-sdk");
+
 const headers = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "Content-Type",
@@ -23,4 +25,21 @@ exports.getBody = function(event) {
 
 exports.getPathParameters = function(event) {
   return event.pathParameters;
+};
+
+exports.callFunction = function(functionName, body, pathParameters) {
+  var lambda = new aws.Lambda();
+  var opts = {
+    FunctionName: functionName,
+    InvocationType: "Event", // async, RequestResponse is sync
+    Payload: JSON.stringify({
+      pathParameters: {
+        pathParameters
+      },
+      body: JSON.stringify({
+        body
+      })
+    })
+  };
+  return lambda.invoke(opts).promise();
 };
