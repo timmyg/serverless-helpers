@@ -4,7 +4,7 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-exports.generateResponse = function(statusCode = 200, body = {}) {
+exports.respond = function(statusCode = 200, body = {}) {
   let msg = body;
   if (typeof msg === "string") {
     msg = { message: msg };
