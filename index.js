@@ -27,7 +27,7 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.callFunction = function(functionName, body, pathParameters) {
+exports.invokeFunction = function(functionName, body, pathParameters) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
