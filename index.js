@@ -20,7 +20,11 @@ exports.respond = function(statusCode = 200, body = {}) {
 };
 
 exports.getBody = function(event) {
-  return JSON.parse(event.body);
+  try {
+    return JSON.parse(event.body);
+  } catch (e) {
+    return event.body;
+  }
 };
 
 exports.getPathParameters = function(event) {
