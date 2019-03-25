@@ -35,7 +35,24 @@ exports.invokeFunction = function(functionName, body, pathParameters) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
-    InvocationType: "Event", // async, RequestResponse is sync
+    InvocationType: "Event",
+    Payload: JSON.stringify({
+      pathParameters: {
+        pathParameters
+      },
+      body: JSON.stringify({
+        body
+      })
+    })
+  };
+  return lambda.invoke(opts).promise();
+};
+
+exports.invokeFunctionAsync = function(functionName, body, pathParameters) {
+  var lambda = new aws.Lambda();
+  var opts = {
+    FunctionName: functionName,
+    InvocationType: "RequestResponse",
     Payload: JSON.stringify({
       pathParameters: {
         pathParameters
