@@ -31,7 +31,7 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.invokeFunction = function(functionName, body, pathParameters) {
+exports.invokeFunction = async function(functionName, body, pathParameters) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
@@ -48,7 +48,7 @@ exports.invokeFunction = function(functionName, body, pathParameters) {
   return lambda.invoke(opts).promise();
 };
 
-exports.invokeFunctionAsync = function(functionName, body, pathParameters) {
+exports.invokeFunctionAsyncSync = function(functionName, body, pathParameters) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
