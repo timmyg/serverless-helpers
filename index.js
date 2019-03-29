@@ -48,7 +48,7 @@ exports.invokeFunction = async function(functionName, body, pathParameters) {
   return lambda.invoke(opts).promise();
 };
 
-exports.invokeFunctionAsyncSync = function(functionName, body, pathParameters) {
+exports.invokeFunctionSync = function(functionName, body, pathParameters) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
