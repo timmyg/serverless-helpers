@@ -27,6 +27,14 @@ exports.getBody = function(event) {
   }
 };
 
+exports.getAuthBearerToken = function(event) {
+  try {
+    return event.headers.Authorization.split(" ")[1];
+  } catch (e) {
+    return null;
+  }
+};
+
 exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
