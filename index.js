@@ -77,7 +77,10 @@ exports.invokeFunctionSync = function(functionName, body, pathParameters) {
 const analytics = new (require("analytics-node"))(
   process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
 );
-export const [identify, track] = [
+const [identify, track] = [
   analytics.identify.bind(analytics),
   analytics.track.bind(analytics)
 ].map(promisify);
+
+exports.identify = identify;
+exports.track = track;
