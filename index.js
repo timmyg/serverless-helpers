@@ -72,3 +72,9 @@ exports.invokeFunctionSync = function(functionName, body, pathParameters) {
   };
   return lambda.invoke(opts).promise();
 };
+
+const analytics = new (require("analytics-node"))(
+  process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
+);
+exports.identify = [analytics.identify.bind(analytics)].map(promisify);
+exports.track = [analytics.track.bind(analytics)].map(promisify);
