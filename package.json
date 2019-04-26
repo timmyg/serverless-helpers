@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/timmyg/serverless-helpers#readme",
   "dependencies": {
+    "analytics-node": "^3.3.0",
     "aws-sdk": "^2.425.0"
   }
 }

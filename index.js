@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const { promisify } = require("util");
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
