@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 
 const headers = {
@@ -31,6 +32,16 @@ exports.getBody = function(event) {
 exports.getAuthBearerToken = function(event) {
   try {
     return event.headers.Authorization.split(" ")[1];
+  } catch (e) {
+    return null;
+  }
+};
+
+exports.getUserId = function(event) {
+  try {
+    const token = event.headers.Authorization.split(" ")[1];
+    const user = jwt.decode(token);
+    return user.sub;
   } catch (e) {
     return null;
   }
