@@ -51,35 +51,39 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.invokeFunction = async function(functionName, body, pathParameters) {
+exports.invokeFunction = async function(
+  functionName,
+  body,
+  pathParameters,
+  headers
+) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
     InvocationType: "Event",
     Payload: JSON.stringify({
-      pathParameters: {
-        pathParameters
-      },
-      body: JSON.stringify({
-        body
-      })
+      headers,
+      pathParameters,
+      body: JSON.stringify(body)
     })
   };
   return lambda.invoke(opts).promise();
 };
 
-exports.invokeFunctionSync = function(functionName, body, pathParameters) {
+exports.invokeFunctionSync = function(
+  functionName,
+  body,
+  pathParameters,
+  headers
+) {
   var lambda = new aws.Lambda();
   var opts = {
     FunctionName: functionName,
     InvocationType: "RequestResponse",
     Payload: JSON.stringify({
-      pathParameters: {
-        pathParameters
-      },
-      body: JSON.stringify({
-        body
-      })
+      headers,
+      pathParameters,
+      body: JSON.stringify(body)
     })
   };
   return lambda.invoke(opts).promise();
