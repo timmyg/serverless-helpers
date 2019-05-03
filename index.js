@@ -41,7 +41,7 @@ exports.getUserId = function(event) {
   try {
     const token = event.headers.Authorization.split(" ")[1];
     const user = jwt.decode(token);
-    return user.sub;
+    return user.sub.replace("sms|", "");
   } catch (e) {
     return null;
   }
