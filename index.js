@@ -89,6 +89,35 @@ exports.invokeFunctionSync = function(
       body: JSON.stringify(body)
     })
   };
+  console.log("1");
+  return lambda
+    .invoke(opts)
+    .promise()
+    .map(function(result) {
+      console.log("2");
+      console.log(result);
+      console.log(JSON.parse(JSON.parse(result.Payload).body));
+      return JSON.parse(JSON.parse(result.Payload).body);
+    });
+};
+
+exports.invokeFunctionSync = function(
+  functionName,
+  body,
+  pathParameters,
+  headers,
+  region
+) {
+  var lambda = new aws.Lambda({ region });
+  var opts = {
+    FunctionName: functionName,
+    InvocationType: "RequestResponse",
+    Payload: JSON.stringify({
+      headers,
+      pathParameters,
+      body: JSON.stringify(body)
+    })
+  };
   return lambda.invoke(opts).promise();
 };
 
