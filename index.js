@@ -52,31 +52,12 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.invokeFunction = async function(
-  functionName,
-  body,
-  pathParameters,
-  headers,
-  region
-) {
-  var lambda = new aws.Lambda({ region });
-  var opts = {
-    FunctionName: functionName,
-    InvocationType: "Event",
-    Payload: JSON.stringify({
-      headers,
-      pathParameters,
-      body: JSON.stringify(body)
-    })
-  };
-  return lambda.invoke(opts).promise();
-};
-
 exports.invokeFunctionSync = function(
   functionName,
   body,
   pathParameters,
   headers,
+  queryParams,
   region
 ) {
   var lambda = new aws.Lambda({ region });
@@ -86,6 +67,7 @@ exports.invokeFunctionSync = function(
     Payload: JSON.stringify({
       headers,
       pathParameters,
+      queryStringParameters: queryParams,
       body: JSON.stringify(body)
     })
   };
@@ -99,26 +81,6 @@ exports.invokeFunctionSync = function(
       console.log(JSON.parse(JSON.parse(result.Payload).body));
       return JSON.parse(JSON.parse(result.Payload).body);
     });
-};
-
-exports.invokeFunctionSync = function(
-  functionName,
-  body,
-  pathParameters,
-  headers,
-  region
-) {
-  var lambda = new aws.Lambda({ region });
-  var opts = {
-    FunctionName: functionName,
-    InvocationType: "RequestResponse",
-    Payload: JSON.stringify({
-      headers,
-      pathParameters,
-      body: JSON.stringify(body)
-    })
-  };
-  return lambda.invoke(opts).promise();
 };
 
 const analytics = new (require("analytics-node"))(
