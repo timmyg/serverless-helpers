@@ -56,9 +56,10 @@ exports.invokeFunction = async function(
   functionName,
   body,
   pathParameters,
-  headers
+  headers,
+  region
 ) {
-  var lambda = new aws.Lambda();
+  var lambda = new aws.Lambda({ region });
   var opts = {
     FunctionName: functionName,
     InvocationType: "Event",
@@ -75,9 +76,10 @@ exports.invokeFunctionSync = function(
   functionName,
   body,
   pathParameters,
-  headers
+  headers,
+  region
 ) {
-  var lambda = new aws.Lambda();
+  var lambda = new aws.Lambda({ region });
   var opts = {
     FunctionName: functionName,
     InvocationType: "RequestResponse",
