@@ -74,7 +74,7 @@ exports.invokeFunctionSync = async function(
   const result = await lambda.invoke(opts).promise();
   return {
     data: JSON.parse(JSON.parse(result.Payload).body),
-    statusCode: JSON.parse(result.Payload).statusCode;
+    statusCode: JSON.parse(result.Payload).statusCode
   };
 };
 
