@@ -52,7 +52,7 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.invokeFunctionSync = function(
+exports.invokeFunctionSync = async function(
   functionName,
   body,
   pathParameters,
@@ -71,16 +71,8 @@ exports.invokeFunctionSync = function(
       body: JSON.stringify(body)
     })
   };
-  console.log("1");
-  return lambda
-    .invoke(opts)
-    .promise()
-    .map(function(result) {
-      console.log("2");
-      console.log(result);
-      console.log(JSON.parse(JSON.parse(result.Payload).body));
-      return JSON.parse(JSON.parse(result.Payload).body);
-    });
+  const result = await lambda.invoke(opts).promise();
+  return JSON.parse(JSON.parse(result.Payload).body);
 };
 
 const analytics = new (require("analytics-node"))(
