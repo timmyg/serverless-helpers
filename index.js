@@ -78,6 +78,30 @@ exports.invokeFunctionSync = async function(
   };
 };
 
+exports.invokeFunctionAsync = async function(
+  functionName,
+  body,
+  pathParameters,
+  headers
+) {
+  var lambda = new aws.Lambda({ region });
+  var opts = {
+    FunctionName: functionName,
+    InvocationType: "Event",
+    Payload: JSON.stringify({
+      headers,
+      pathParameters,
+      queryStringParameters: queryParams,
+      body: JSON.stringify(body)
+    })
+  };
+  const result = await lambda.invoke(opts).promise();
+  return {
+    data: JSON.parse(JSON.parse(result.Payload).body),
+    statusCode: JSON.parse(result.Payload).statusCode
+  };
+};
+
 const analytics = new (require("analytics-node"))(
   process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
 );
