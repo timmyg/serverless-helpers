@@ -82,7 +82,9 @@ exports.invokeFunctionAsync = async function(
   functionName,
   body,
   pathParameters,
-  headers
+  headers,
+  queryParams,
+  region
 ) {
   var lambda = new aws.Lambda({ region });
   var opts = {
