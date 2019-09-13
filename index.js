@@ -98,10 +98,14 @@ exports.invokeFunctionAsync = async function(
     })
   };
   const result = await lambda.invoke(opts).promise();
-  return {
-    data: JSON.parse(JSON.parse(result.Payload).body),
-    statusCode: JSON.parse(result.Payload).statusCode
-  };
+  if (result && result.Payload) {
+    return {
+      data: JSON.parse(JSON.parse(result.Payload).body),
+      statusCode: JSON.parse(result.Payload).statusCode
+    };
+  } else {
+    return;
+  }
 };
 
 const analytics = new (require("analytics-node"))(
