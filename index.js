@@ -118,6 +118,7 @@ class Invoke {
     this._pathParams = undefined;
     this._headers = undefined;
     this._queryParams = undefined;
+    this._sync = true;
   }
 
   service(service) {
@@ -160,11 +161,21 @@ class Invoke {
     return this;
   }
 
+  async() {
+    this._sync = false;
+    return this;
+  }
+
+  sync() {
+    this._sync = true;
+    return this;
+  }
+
   async go() {
     const lambda = new aws.Lambda({ region: this._region });
     const options = {
       FunctionName: `${this._service}-${this._stage}-${this._name}`,
-      InvocationType: "RequestResponse",
+      InvocationType: this._sync ? "RequestResponse" : "Event",
       Payload: JSON.stringify({
         headers: this._headers,
         pathParameters: this._pathParams,
