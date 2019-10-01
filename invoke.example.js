@@ -1,33 +1,60 @@
-class Arithmetic {
+class Invoke {
   constructor() {
-    this.value = 0;
+    this.region = "us-east";
+    this.stage = process.env.stage;
+    this.name = undefined;
+    this.body = {};
+    this.pathParams = undefined;
+    this.headers = undefined;
+    this.queryParams = undefined;
   }
-  get val() {
-    return this.value;
-  }
-  sum(...args) {
-    this.value = args.reduce((sum, current) => sum + current, 0);
+
+  //   get create() {
+  //     return this;
+  //   }
+
+  setName(name) {
+    this.name = name;
     return this;
   }
-  add(value) {
-    this.value += value;
+
+  pathParams(pathParams) {
+    this.pathParams = pathParams;
     return this;
   }
-  subtract(value) {
-    this.value -= value;
+
+  headers(headers) {
+    this.headers = headers;
     return this;
   }
-  average(...args) {
-    this.value = args.length
-      ? this.sum(...args).value / args.length
-      : undefined;
+
+  queryParams(queryParams) {
+    this.queryParams = queryParams;
     return this;
   }
+
+  body(body) {
+    this.body = body;
+    return this;
+  }
+
+  region(region) {
+    this.region = region;
+    return this;
+  }
+
+  create() {
+    console.log(this);
+  }
+
+  //   async go() {
+  //     console.log("go", this);
+  //   }
 }
 
-a = new Arithmetic();
-const x = a
-  .sum(1, 3, 6) // => { value: 10 }
-  .subtract(3) // => { value: 7 }
-  .add(4).val; // => { value: 11 } // => 11
-console.log(x);
+let a = new Invoke();
+console.log(a);
+a.setName("functionName3") // => { value: 10 }
+  .region("eu-west-1") // => { value: 7 }
+  .create();
+console.log(b);
