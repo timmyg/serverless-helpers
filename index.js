@@ -155,10 +155,15 @@ class Invoke {
     return this;
   }
 
+  stage(stage) {
+    this._stage = stage;
+    return this;
+  }
+
   async go() {
     const lambda = new aws.Lambda({ this._region });
     const options = {
-      FunctionName: this._name,
+      FunctionName:  `${this._service}-${this._stage}-${this._name}`,
       InvocationType: "RequestResponse",
       Payload: JSON.stringify({
         this._headers,
