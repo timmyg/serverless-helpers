@@ -52,61 +52,61 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-exports.invokeFunctionSync = async function(
-  functionName,
-  body,
-  pathParameters,
-  headers,
-  queryParams,
-  region
-) {
-  var lambda = new aws.Lambda({ region });
-  var opts = {
-    FunctionName: functionName,
-    InvocationType: "RequestResponse",
-    Payload: JSON.stringify({
-      headers,
-      pathParameters,
-      queryStringParameters: queryParams,
-      body: JSON.stringify(body)
-    })
-  };
-  const result = await lambda.invoke(opts).promise();
-  return {
-    data: JSON.parse(JSON.parse(result.Payload).body),
-    statusCode: JSON.parse(result.Payload).statusCode
-  };
-};
+// exports.invokeFunctionSync = async function(
+//   functionName,
+//   body,
+//   pathParameters,
+//   headers,
+//   queryParams,
+//   region
+// ) {
+//   var lambda = new aws.Lambda({ region });
+//   var opts = {
+//     FunctionName: functionName,
+//     InvocationType: "RequestResponse",
+//     Payload: JSON.stringify({
+//       headers,
+//       pathParameters,
+//       queryStringParameters: queryParams,
+//       body: JSON.stringify(body)
+//     })
+//   };
+//   const result = await lambda.invoke(opts).promise();
+//   return {
+//     data: JSON.parse(JSON.parse(result.Payload).body),
+//     statusCode: JSON.parse(result.Payload).statusCode
+//   };
+// };
 
-exports.invokeFunctionAsync = async function(
-  functionName,
-  body,
-  pathParameters,
-  headers,
-  queryParams,
-  region
-) {
-  var lambda = new aws.Lambda({ region });
-  var opts = {
-    FunctionName: functionName,
-    InvocationType: "Event",
-    Payload: JSON.stringify({
-      headers,
-      pathParameters,
-      queryStringParameters: queryParams,
-      body: JSON.stringify(body)
-    })
-  };
-  const result = await lambda.invoke(opts).promise();
-  if (result && result.Payload) {
-    return {
-      data: JSON.parse(JSON.parse(result.Payload).body),
-      statusCode: JSON.parse(result.Payload).statusCode
-    };
-  } else {
-    return;
-  }
-};
+// exports.invokeFunctionAsync = async function(
+//   functionName,
+//   body,
+//   pathParameters,
+//   headers,
+//   queryParams,
+//   region
+// ) {
+//   var lambda = new aws.Lambda({ region });
+//   var opts = {
+//     FunctionName: functionName,
+//     InvocationType: "Event",
+//     Payload: JSON.stringify({
+//       headers,
+//       pathParameters,
+//       queryStringParameters: queryParams,
+//       body: JSON.stringify(body)
+//     })
+//   };
+//   const result = await lambda.invoke(opts).promise();
+//   if (result && result.Payload) {
+//     return {
+//       data: JSON.parse(JSON.parse(result.Payload).body),
+//       statusCode: JSON.parse(result.Payload).statusCode
+//     };
+//   } else {
+//     return;
+//   }
+// };
 
 class Invoke {
   constructor() {
@@ -161,12 +161,12 @@ class Invoke {
   }
 
   async go() {
-    const lambda = new aws.Lambda({ this._region });
+    const lambda = new aws.Lambda({ region: this._region });
     const options = {
-      FunctionName:  `${this._service}-${this._stage}-${this._name}`,
+      FunctionName: `${this._service}-${this._stage}-${this._name}`,
       InvocationType: "RequestResponse",
       Payload: JSON.stringify({
-        this._headers,
+        headers: this._headers,
         pathParameters: this._pathParams,
         queryStringParameters: this._queryParams,
         body: JSON.stringify(this._body)
