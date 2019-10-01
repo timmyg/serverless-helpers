@@ -110,55 +110,61 @@ exports.invokeFunctionAsync = async function(
 
 class Invoke {
   constructor() {
-    this.region = "us-east";
-    this.stage = process.env.stage;
-    this.name = undefined;
-    this.body = {};
-    this.pathParams = undefined;
-    this.headers = undefined;
-    this.queryParams = undefined;
+    this._region = "us-east";
+    this._stage = process.env.stage;
+    this._service = undefined;
+    this._func = undefined;
+    this._body = {};
+    this._pathParams = undefined;
+    this._headers = undefined;
+    this._queryParams = undefined;
   }
 
-  name(name) {
-    this.name = name;
+  service(service) {
+    this._service = service;
+    return this;
+  }
+
+  func(func) {
+    this._func = func;
     return this;
   }
 
   pathParams(pathParams) {
-    this.pathParams = pathParams;
+    this._pathParams = pathParams;
     return this;
   }
 
   headers(headers) {
-    this.headers = headers;
+    this._headers = headers;
     return this;
   }
 
   queryParams(queryParams) {
-    this.queryParams = queryParams;
+    this._queryParams = queryParams;
     return this;
   }
 
   body(body) {
-    this.body = body;
+    this._body = body;
     return this;
   }
 
   region(region) {
-    this.region = region;
+    this._region = region;
     return this;
   }
 
   async go() {
-    const lambda = new aws.Lambda({ this.region });
+    const lambda = new aws.Lambda({ this._region });
     const options = {
-      FunctionName: this.name,
+      FunctionName: this._name,
       InvocationType: "RequestResponse",
       Payload: JSON.stringify({
-        this.headers,
-        pathParameters: this.pathParams,
-        queryStringParameters: this.queryParams,
-        body: JSON.stringify(this.body)
+        this._headers,
+        pathParameters: this._pathParams,
+        queryStringParameters: this._queryParams,
+        body: JSON.stringify(this._body)
       })
     };
     const result = await lambda.invoke(options).promise();
@@ -170,19 +176,3 @@ class Invoke {
 }
 
 exports.Invoke = Invoke;
-
-// exports.invoke = async function() {
-
-//   a = new Invoke();
-// };
-
-// const analytics = new (require("analytics-node"))(
-//   process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
-// );
-// const [identify, track] = [
-//   analytics.identify.bind(analytics),
-//   analytics.track.bind(analytics)
-// ].map(promisify);
-
-// exports.identify = identify;
-// exports.track = track;

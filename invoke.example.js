@@ -1,60 +1,56 @@
-class Invoke {
-  constructor() {
-    this.region = "us-east";
-    this.stage = process.env.stage;
-    this.name = undefined;
-    this.body = {};
-    this.pathParams = undefined;
-    this.headers = undefined;
-    this.queryParams = undefined;
+(async () => {
+  class Invoke {
+    constructor() {
+      this._region = "us-east";
+      this._stage = process.env.stage;
+      this._name = undefined;
+      this._body = {};
+      this._pathParams = undefined;
+      this._headers = undefined;
+      this._queryParams = undefined;
+    }
+
+    name(name) {
+      this._name = name;
+      return this;
+    }
+
+    pathParams(pathParams) {
+      this._pathParams = pathParams;
+      return this;
+    }
+
+    headers(headers) {
+      this._headers = headers;
+      return this;
+    }
+
+    queryParams(queryParams) {
+      this._queryParams = queryParams;
+      return this;
+    }
+
+    body(body) {
+      this._body = body;
+      return this;
+    }
+
+    region(region) {
+      this._region = region;
+      return this;
+    }
+
+    async go() {
+      return new Promise(resolve => {
+        setTimeout(resolve, 3000);
+      });
+    }
   }
 
-  //   get create() {
-  //     return this;
-  //   }
-
-  setName(name) {
-    this.name = name;
-    return this;
-  }
-
-  pathParams(pathParams) {
-    this.pathParams = pathParams;
-    return this;
-  }
-
-  headers(headers) {
-    this.headers = headers;
-    return this;
-  }
-
-  queryParams(queryParams) {
-    this.queryParams = queryParams;
-    return this;
-  }
-
-  body(body) {
-    this.body = body;
-    return this;
-  }
-
-  region(region) {
-    this.region = region;
-    return this;
-  }
-
-  create() {
-    console.log(this);
-  }
-
-  //   async go() {
-  //     console.log("go", this);
-  //   }
-}
-
-let a = new Invoke();
-console.log(a);
-a.setName("functionName3") // => { value: 10 }
-  .region("eu-west-1") // => { value: 7 }
-  .create();
-console.log(b);
+  let a = new Invoke();
+  console.log(a);
+  console.log("1");
+  a.name("functionName3").region("eu-west-1");
+  await a.go();
+  console.log("2!");
+})();

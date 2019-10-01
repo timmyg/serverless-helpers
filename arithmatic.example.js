@@ -1,12 +1,14 @@
-class Arithmetic {
+class Invoke {
   constructor() {
-    this.value = 0;
+    // this.value = 0;
+    this.region = "us-east-1";
+    this._name = "";
   }
   get val() {
     return this.value;
   }
-  sum(...args) {
-    this.value = args.reduce((sum, current) => sum + current, 0);
+  name(name) {
+    this._name = name;
     return this;
   }
   add(value) {
@@ -25,10 +27,10 @@ class Arithmetic {
   }
 }
 
-a = new Arithmetic();
+a = new Invoke();
 console.log(
   a
-    .sum(1, 3, 6) // => { value: 10 }
+    .name(1) // => { value: 10 }
     .subtract(3) // => { value: 7 }
     .add(4).val // => { value: 11 } // => 11
 );
