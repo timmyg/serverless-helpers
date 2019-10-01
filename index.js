@@ -149,7 +149,7 @@ class Invoke {
     return this;
   }
 
-  async function go() {
+  async go() {
     const lambda = new aws.Lambda({ this.region });
     const options = {
       FunctionName: this.name,
