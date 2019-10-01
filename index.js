@@ -108,13 +108,81 @@ exports.invokeFunctionAsync = async function(
   }
 };
 
-const analytics = new (require("analytics-node"))(
-  process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
-);
-const [identify, track] = [
-  analytics.identify.bind(analytics),
-  analytics.track.bind(analytics)
-].map(promisify);
+class Invoke {
+  constructor() {
+    this.region = "us-east";
+    this.stage = process.env.stage;
+    this.name = undefined;
+    this.body = {};
+    this.pathParams = undefined;
+    this.headers = undefined;
+    this.queryParams = undefined;
+  }
 
-exports.identify = identify;
-exports.track = track;
+  name(name) {
+    this.name = name;
+    return this;
+  }
+
+  pathParams(pathParams) {
+    this.pathParams = pathParams;
+    return this;
+  }
+
+  headers(headers) {
+    this.headers = headers;
+    return this;
+  }
+
+  queryParams(queryParams) {
+    this.queryParams = queryParams;
+    return this;
+  }
+
+  body(body) {
+    this.body = body;
+    return this;
+  }
+
+  region(region) {
+    this.region = region;
+    return this;
+  }
+
+  async function go() {
+    const lambda = new aws.Lambda({ this.region });
+    const options = {
+      FunctionName: this.name,
+      InvocationType: "RequestResponse",
+      Payload: JSON.stringify({
+        this.headers,
+        pathParameters: this.pathParams,
+        queryStringParameters: this.queryParams,
+        body: JSON.stringify(this.body)
+      })
+    };
+    const result = await lambda.invoke(options).promise();
+    return {
+      data: JSON.parse(JSON.parse(result.Payload).body),
+      statusCode: JSON.parse(result.Payload).statusCode
+    };
+  }
+}
+
+exports.Invoke = Invoke;
+
+// exports.invoke = async function() {
+
+//   a = new Invoke();
+// };
+
+// const analytics = new (require("analytics-node"))(
+//   process.env.segmentWriteKey || process.env.SEGMENT_WRITE_KEY
+// );
+// const [identify, track] = [
+//   analytics.identify.bind(analytics),
+//   analytics.track.bind(analytics)
+// ].map(promisify);
+
+// exports.identify = identify;
+// exports.track = track;
