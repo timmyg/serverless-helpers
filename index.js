@@ -53,7 +53,7 @@ exports.getPathParameters = function(event) {
 
 class Invoke {
   constructor() {
-    this._region = "us-east";
+    this._region = "us-east-1";
     this._stage = process.env.stage;
     this._service = undefined;
     this._name = undefined;
