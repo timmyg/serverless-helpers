@@ -127,7 +127,9 @@ class Invoke {
         body: JSON.stringify(this._body)
       })
     };
+    console.log(options);
     const result = await lambda.invoke(options).promise();
+    console.log(result);
     return {
       data: JSON.parse(JSON.parse(result.Payload).body),
       statusCode: JSON.parse(result.Payload).statusCode
