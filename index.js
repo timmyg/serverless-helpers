@@ -8,7 +8,7 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-exports.respond = function(statusCode = 200, body = {}) {
+exports.respond = function x(statusCode = 200, body = {}) {
   let msg = body;
   if (typeof msg === "string") {
     msg = { message: msg };
@@ -130,19 +130,13 @@ class Invoke {
     if (this._debug) console.log(options);
     const result = await lambda.invoke(options).promise();
     if (this._debug) console.log(result);
-    try {
-      const response = {
-        data: result.PayloadJSON.parse(JSON.parse(result.Payload).body),
+    if (this._sync) {
+      return {
+        data: JSON.parse(JSON.parse(result.Payload).body),
         statusCode: JSON.parse(result.Payload).statusCode
       };
-      return response;
-    } catch (e) {
-      if (this._debug) console.error(options);
-      const response = {
-        data: { error: result.Payload },
-        statusCode: 400
-      };
-      return response;
+    } else {
+      return {};
     }
   }
 }
