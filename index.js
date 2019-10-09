@@ -1,6 +1,5 @@
 const aws = require("aws-sdk");
 const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -9,7 +8,7 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-exports.respond = function(statusCode = 200, body = {}) {
+exports.respond = function x(statusCode = 200, body = {}) {
   let msg = body;
   if (typeof msg === "string") {
     msg = { message: msg };
@@ -52,68 +51,12 @@ exports.getPathParameters = function(event) {
   return event.pathParameters;
 };
 
-// exports.invokeFunctionSync = async function(
-//   functionName,
-//   body,
-//   pathParameters,
-//   headers,
-//   queryParams,
-//   region
-// ) {
-//   var lambda = new aws.Lambda({ region });
-//   var opts = {
-//     FunctionName: functionName,
-//     InvocationType: "RequestResponse",
-//     Payload: JSON.stringify({
-//       headers,
-//       pathParameters,
-//       queryStringParameters: queryParams,
-//       body: JSON.stringify(body)
-//     })
-//   };
-//   const result = await lambda.invoke(opts).promise();
-//   return {
-//     data: JSON.parse(JSON.parse(result.Payload).body),
-//     statusCode: JSON.parse(result.Payload).statusCode
-//   };
-// };
-
-// exports.invokeFunctionAsync = async function(
-//   functionName,
-//   body,
-//   pathParameters,
-//   headers,
-//   queryParams,
-//   region
-// ) {
-//   var lambda = new aws.Lambda({ region });
-//   var opts = {
-//     FunctionName: functionName,
-//     InvocationType: "Event",
-//     Payload: JSON.stringify({
-//       headers,
-//       pathParameters,
-//       queryStringParameters: queryParams,
-//       body: JSON.stringify(body)
-//     })
-//   };
-//   const result = await lambda.invoke(opts).promise();
-//   if (result && result.Payload) {
-//     return {
-//       data: JSON.parse(JSON.parse(result.Payload).body),
-//       statusCode: JSON.parse(result.Payload).statusCode
-//     };
-//   } else {
-//     return;
-//   }
-// };
-
 class Invoke {
   constructor() {
-    this._region = "us-east";
+    this._region = "us-east-1";
     this._stage = process.env.stage;
     this._service = undefined;
-    this._func = undefined;
+    this._name = undefined;
     this._body = {};
     this._pathParams = undefined;
     this._headers = undefined;
@@ -126,8 +69,8 @@ class Invoke {
     return this;
   }
 
-  func(func) {
-    this._func = func;
+  name(name) {
+    this._name = name;
     return this;
   }
 
@@ -172,6 +115,7 @@ class Invoke {
   }
 
   async go() {
+    // return await new Promise(resolve => setTimeout(resolve, 3000));
     const lambda = new aws.Lambda({ region: this._region });
     const options = {
       FunctionName: `${this._service}-${this._stage}-${this._name}`,
@@ -183,11 +127,17 @@ class Invoke {
         body: JSON.stringify(this._body)
       })
     };
+    if (this._debug) console.log(options);
     const result = await lambda.invoke(options).promise();
-    return {
-      data: JSON.parse(JSON.parse(result.Payload).body),
-      statusCode: JSON.parse(result.Payload).statusCode
-    };
+    if (this._debug) console.log(result);
+    if (this._sync) {
+      return {
+        data: JSON.parse(JSON.parse(result.Payload).body),
+        statusCode: JSON.parse(result.Payload).statusCode
+      };
+    } else {
+      return {};
+    }
   }
 }
 
