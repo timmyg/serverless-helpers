@@ -1,5 +1,7 @@
 const aws = require("aws-sdk");
 const jwt = require("jsonwebtoken");
+const Raven = require("raven"); // Official `raven` module
+const RavenLambdaWrapper = require("serverless-sentry-lib"); // This helper library
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -142,3 +144,5 @@ class Invoke {
 }
 
 exports.Invoke = Invoke;
+exports.Raven = Raven;
+exports.RavenLambdaWrapper = RavenLambdaWrapper;
