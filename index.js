@@ -10,16 +10,19 @@ const headers = {
   "Content-Type": "application/json"
 };
 
-exports.respond = function x(statusCode = 200, body = {}) {
-  let msg = body;
-  if (typeof msg === "string") {
-    msg = { message: msg };
+exports.respond = function x(statusCode = 200, body = {}, code) {
+  // let msg = body;
+  if (typeof body === "string") {
+    body = { message: body };
+  }
+  if (!!code) {
+    body.code = code;
   }
 
   return {
     statusCode,
     headers,
-    body: JSON.stringify(msg)
+    body: JSON.stringify(body)
   };
 };
 
