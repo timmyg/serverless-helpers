@@ -17,26 +17,10 @@
   },
   "homepage": "https://github.com/timmyg/serverless-helpers#readme",
   "dependencies": {
-    "@sentry/node": "^6.0.1",
-    "@sentry/serverless": "^6.0.1",
     "analytics-node": "^3.3.0",
     "aws-sdk": "^2.425.0",
-    "aws-xray-sdk": "^3.2.0",
-    "dotenv": "^8.2.0",
-    "dynamoose": "^2.5.0",
-    "jsonwebtoken": "^8.5.1"
-  },
-  "devDependencies": {
-    "jest": "^24.0.0",
-    "serverless": "^1.38.0",
-    "serverless-bundle": "^4.2.0",
-    "serverless-domain-manager": "^2.6.13",
-    "serverless-dotenv-plugin": "^2.1.1",
-    "serverless-plugin-scripts": "^1.0.2",
-    "serverless-plugin-tracing": "^2.0.0",
-    "serverless-prune-plugin": "^1.4.0",
-    "serverless-sentry": "^1.2.0",
-    "serverless-sentry-lib": "^1.1.2",
-    "ts-jest": "^26.4.4"
+    "jsonwebtoken": "^8.5.1",
+    "raven": "^2.6.4",
+    "serverless-sentry-lib": "^1.1.2"
   }
 }
