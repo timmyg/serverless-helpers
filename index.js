@@ -1,13 +1,11 @@
 const aws = require("aws-sdk");
 const jwt = require("jsonwebtoken");
-const Raven = require("raven"); // Official `raven` module
-const RavenLambdaWrapper = require("serverless-sentry-lib"); // This helper library
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,partner",
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 };
 
 exports.respond = function x(statusCode = 200, body = {}, code) {
@@ -22,11 +20,11 @@ exports.respond = function x(statusCode = 200, body = {}, code) {
   return {
     statusCode,
     headers,
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 };
 
-exports.getBody = function(event) {
+exports.getBody = function (event) {
   try {
     return JSON.parse(event.body);
   } catch (e) {
@@ -34,7 +32,7 @@ exports.getBody = function(event) {
   }
 };
 
-exports.getAuthBearerToken = function(event) {
+exports.getAuthBearerToken = function (event) {
   try {
     return event.headers.Authorization.split(" ")[1];
   } catch (e) {
@@ -42,7 +40,7 @@ exports.getAuthBearerToken = function(event) {
   }
 };
 
-exports.getUserId = function(event) {
+exports.getUserId = function (event) {
   try {
     const token = event.headers.Authorization.split(" ")[1];
     const user = jwt.decode(token);
@@ -52,7 +50,7 @@ exports.getUserId = function(event) {
   }
 };
 
-exports.getPathParameters = function(event) {
+exports.getPathParameters = function (event) {
   return event.pathParameters;
 };
 
@@ -129,8 +127,8 @@ class Invoke {
         headers: this._headers,
         pathParameters: this._pathParams,
         queryStringParameters: this._queryParams,
-        body: JSON.stringify(this._body)
-      })
+        body: JSON.stringify(this._body),
+      }),
     };
     if (this._debug) console.log(options);
     const result = await lambda.invoke(options).promise();
@@ -138,7 +136,7 @@ class Invoke {
     if (this._sync) {
       return {
         data: JSON.parse(JSON.parse(result.Payload).body),
-        statusCode: JSON.parse(result.Payload).statusCode
+        statusCode: JSON.parse(result.Payload).statusCode,
       };
     } else {
       return {};
@@ -147,5 +145,5 @@ class Invoke {
 }
 
 exports.Invoke = Invoke;
-exports.Raven = Raven;
-exports.RavenLambdaWrapper = RavenLambdaWrapper;
+// exports.Raven = Raven;
+// exports.RavenLambdaWrapper = RavenLambdaWrapper;
