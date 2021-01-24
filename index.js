@@ -142,6 +142,7 @@ class Invoke {
       } catch (e) {
         return {
           error: e,
+          errorResult: result.Payload,
         };
       }
     } else {
