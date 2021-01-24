@@ -142,7 +142,7 @@ class Invoke {
       } catch (e) {
         return {
           error: e,
-          errorResult: result.Payload,
+          errorResult: JSON.parse(result.Payload),
         };
       }
     } else {
