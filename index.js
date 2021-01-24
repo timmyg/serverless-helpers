@@ -134,10 +134,16 @@ class Invoke {
     const result = await lambda.invoke(options).promise();
     if (this._debug) console.log(result);
     if (this._sync) {
-      return {
-        data: JSON.parse(JSON.parse(result.Payload).body),
-        statusCode: JSON.parse(result.Payload).statusCode,
-      };
+      try {
+        return {
+          data: JSON.parse(JSON.parse(result.Payload).body),
+          statusCode: JSON.parse(result.Payload).statusCode,
+        };
+      } catch (e) {
+        return {
+          error: e,
+        };
+      }
     } else {
       return {};
     }
